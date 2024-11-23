@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Eshop.Contracts.Shared;
+using Eshop.Domain.Customers;
 using Eshop.Domain.Orders;
 
 namespace Eshop.Application.Mappers;
@@ -27,5 +28,10 @@ internal class CustomProfile : Profile
         CreateMap<OrderProduct, ProductDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
+        
+        CreateMap<Customer, CustomerDto>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+
     }
 }

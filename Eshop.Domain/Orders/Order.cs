@@ -45,6 +45,7 @@ public class Order : Entity, IAggregateRoot
         }
 
         CheckRule(new OrderMustHaveAtLeastOneProductRule(orderProducts));
+        CheckRule(new OrderCostLimitRule(orderProducts));
 
         return new Order(customerId, orderProducts);
     }

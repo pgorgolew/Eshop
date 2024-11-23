@@ -14,6 +14,7 @@ public static class Registry
     public static void RegistryInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IProductPriceDataApi, ProductPriceDataApi>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();

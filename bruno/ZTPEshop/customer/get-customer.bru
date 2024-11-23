@@ -1,0 +1,22 @@
+meta {
+  name: get-customer
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:5077/api/v1/customers/d832cdc4-0e53-4ea7-88f6-20c378ba8799
+  body: none
+  auth: none
+}
+
+body:json {
+  {
+    "products": [
+      {
+        "id": "514f6265-a9b8-46da-a31d-50f4f4c20911",
+        "quantity": 100000000
+      }
+    ]
+  }
+}

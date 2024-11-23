@@ -1,0 +1,17 @@
+meta {
+  name: create-wrong-customer
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5077/api/v1/customers
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": null
+  }
+}
