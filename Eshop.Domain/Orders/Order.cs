@@ -1,6 +1,7 @@
 ﻿using Eshop.Domain.Orders.Events;
 using Eshop.Domain.Orders.Rules;
 using Eshop.Domain.Products;
+using Eshop.Domain.CheckoutCarts;
 using Eshop.Domain.SeedWork;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -30,14 +31,28 @@ public class Order : Entity, IAggregateRoot
 
     public static Order Create(
         Guid customerId,
-        List<OrderProductData> orderProductsData,
+        List<ProductQuantityData> orderProductsData,
         List<ProductPriceData> allProductPriceData)
+    {
+        var orderProducts = CreateOrderProducts(orderProductsData, allProductPriceData);
+        return new Order(customerId, orderProducts);
+    }
+    
+    public static Order Create(CheckoutCart checkoutCart, List<ProductPriceData> allProductsPriceData)
+    {
+        CheckRule(new OrderCannotBeCreatedFromArchivedCheckoutCart(checkoutCart));
+        
+        var orderProducts = CreateOrderProducts(checkoutCart.Products, allProductsPriceData);
+        return new Order(checkoutCart.CustomerId, orderProducts);
+    }
+
+    private static List<OrderProduct> CreateOrderProducts(List<ProductQuantityData> ordersProductData, List<ProductPriceData> allProductPriceDatas)
     {
         List<OrderProduct> orderProducts = [];
 
-        foreach (var orderProductData in orderProductsData)
+        foreach (var orderProductData in ordersProductData)
         {
-            var productPriceData = allProductPriceData.First(x => x.ProductId == orderProductData.ProductId);
+            var productPriceData = allProductPriceDatas.First(x => x.ProductId == orderProductData.ProductId);
 
             var orderProduct = OrderProduct.Create(orderProductData.ProductId, orderProductData.Quantity, productPriceData.UnitPrice);
 
@@ -46,7 +61,7 @@ public class Order : Entity, IAggregateRoot
 
         CheckRule(new OrderMustHaveAtLeastOneProductRule(orderProducts));
         CheckRule(new OrderCostLimitRule(orderProducts));
-
-        return new Order(customerId, orderProducts);
+        
+        return orderProducts;
     }
 }

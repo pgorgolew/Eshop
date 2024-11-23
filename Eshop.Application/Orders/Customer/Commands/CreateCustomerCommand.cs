@@ -1,6 +1,6 @@
 ﻿using Eshop.Application.Configuration.Commands;
 
-namespace Eshop.Application.Orders.CustomerOrder.Commands;
+namespace Eshop.Application.Orders.Customer.Commands;
 
 public class CreateCustomerCommand(
     string name) : CommandBase<Guid>

@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Ardalis.GuardClauses;
 using Eshop.API.Examples;
-using Eshop.Application.Orders.CustomerOrder.Queries;
+using Eshop.Application.Orders.Customer.Commands;
+using Eshop.Application.Orders.Customer.Queries;
 using Eshop.Contracts;
 using Eshop.Contracts.Shared;
 using Swashbuckle.AspNetCore.Filters;
@@ -26,9 +27,8 @@ public class CustomerController(ISender sender) : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ErrorDto), (int)HttpStatusCode.BadGateway)]
-    //TODO fix swagger
-    // [SwaggerRequestExample(typeof(CustomerOrderRequest), typeof(CustomerOrderRequestExample))]
-    // [SwaggerResponseExample((int)HttpStatusCode.BadGateway, typeof(ErrorDtoExample))]
+    [SwaggerRequestExample(typeof(CustomerRequest), typeof(CustomerRequestExample))]
+    [SwaggerResponseExample((int)HttpStatusCode.BadGateway, typeof(ErrorDtoExample))]
     public async Task<IActionResult> AddCustomerOrder(
         [FromBody] CustomerRequest request,
         CancellationToken cancellationToken = default)

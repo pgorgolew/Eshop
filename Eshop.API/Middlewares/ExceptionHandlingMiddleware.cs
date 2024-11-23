@@ -1,11 +1,13 @@
 using System.Net;
 using System.Text.Json;
+using Eshop.API.Service;
+using Eshop.Application.Metrics;
 using Eshop.Contracts.Shared;
 using Eshop.Domain.SeedWork;
 
 namespace Eshop.API.Middlewares;
 
-public class ExceptionHandlingMiddleware(RequestDelegate next)
+public class ExceptionHandlingMiddleware(RequestDelegate next, MetricsService metricsService)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -13,33 +15,27 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
         {
             await next(context);
         }
-        catch (BusinessRuleValidationException ex)
-        {
-            await HandleBuisnessRuleException(context, ex);
-        }
         catch (Exception ex)
         {
-            await HandleExceptions(context, ex);
+            var errorType = ErrorTypeExtensions.FromException(ex);
+            var metricName = errorType.ToMetricName();
+
+            metricsService.RecordError(metricName);
+
+            context.Response.ContentType = "application/json";
+            var response = CreateErrorResponse(context, ex);
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
 
-    private static Task HandleBuisnessRuleException(HttpContext context, BusinessRuleValidationException exception)
+    private static ErrorDto CreateErrorResponse(HttpContext context, Exception exception)
     {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        if (exception is BusinessRuleValidationException businessException)        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return new ErrorDto(businessException.Message, businessException.Details);
+        }
 
-        var response = new ErrorDto(exception.Message, exception.Details);
-
-        return context.Response.WriteAsync(JsonSerializer.Serialize(response));
-    }
-    
-    private static Task HandleExceptions(HttpContext context, Exception exception)
-    {
-        context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-        var response = new ErrorDto("Internal Server Error", exception.Message);
-
-        return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        return new ErrorDto("Internal Server Error", exception.Message);
     }
 }

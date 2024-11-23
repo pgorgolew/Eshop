@@ -1,4 +1,5 @@
-﻿using Eshop.Domain.SeedWork;
+﻿using Eshop.Domain.Products;
+using Eshop.Domain.SeedWork;
 
 namespace Eshop.Domain.Orders.Rules;
 

@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Eshop.Domain.Orders;
+namespace Eshop.Domain.Products;
 
 public class OrderProduct : ValueObject
 {

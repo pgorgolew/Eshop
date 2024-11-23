@@ -4,8 +4,14 @@ meta {
   seq: 2
 }
 
-get {
-  url: 
-  body: none
+post {
+  url: http://localhost:5077/api/v1/customers
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "name": null
+  }
 }

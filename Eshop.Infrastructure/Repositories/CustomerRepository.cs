@@ -14,7 +14,7 @@ internal class CustomerRepository(OrdersContext context, IEntityTracker entityTr
 
     public void Add(Customer customer)
     {
-        Guard.Against.Null(customer, nameof(customer), "Order is required.");
+        Guard.Against.Null(customer, nameof(customer), "Customer is required.");
         _entityTracker.Track(customer);
     }
 

@@ -3,7 +3,7 @@ using Eshop.Application.Configuration.Queries;
 using Eshop.Contracts.Shared;
 using Eshop.Domain.Orders;
 
-namespace Eshop.Application.Orders.CustomerOrder.Queries;
+namespace Eshop.Application.Orders.Customer.Queries;
 
 public class GetCustomerQueryHandler(ICustomerRepository customerRepository, IMapper mapper)
     : IQueryHandler<GetCustomerQuery, CustomerDto>

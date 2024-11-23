@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Eshop.Application.Configuration.Commands;
-using Eshop.Domain.Customers;
+﻿using Eshop.Application.Configuration.Commands;
 using Eshop.Domain.Orders;
 using Eshop.Domain.SeedWork;
 
-namespace Eshop.Application.Orders.CustomerOrder.Commands;
+namespace Eshop.Application.Orders.Customer.Commands;
 
 public class CreateCustomerCommandHandler(
     ICustomerRepository customerRepository,
@@ -16,7 +14,7 @@ public class CreateCustomerCommandHandler(
 
     public async Task<Guid> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {         
-        var customer = Customer.Create(request.Name);
+        var customer = Domain.Customers.Customer.Create(request.Name);
 
         _customerRepository.Add(customer);
 

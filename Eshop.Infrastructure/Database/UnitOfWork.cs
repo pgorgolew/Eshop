@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Eshop.Domain.CheckoutCarts;
 using Eshop.Domain.Customers;
 using Eshop.Domain.Orders;
 using Eshop.Domain.SeedWork;
@@ -46,6 +47,12 @@ internal sealed class UnitOfWork(
                     {
                         var filter = Builders<Customer>.Filter.Eq(c => c.Id, customer.Id);
                         await _ordersContext.Customers.ReplaceOneAsync(session, filter, customer, new ReplaceOptions { IsUpsert = true }, cancellationToken);
+                        break;
+                    }
+                    case CheckoutCart checkoutCart:
+                    {
+                        var filter = Builders<CheckoutCart>.Filter.Eq(c => c.Id, checkoutCart.Id);
+                        await _ordersContext.CheckoutCarts.ReplaceOneAsync(session, filter, checkoutCart, new ReplaceOptions { IsUpsert = true }, cancellationToken);
                         break;
                     }
                     default:
