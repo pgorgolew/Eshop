@@ -8,7 +8,7 @@ public class OrderDto
 
     private OrderDto()
     {
-        Products = new List<ProductDto>();
+        Products = [];
     }
 
     public OrderDto(Guid id, List<ProductDto> products)

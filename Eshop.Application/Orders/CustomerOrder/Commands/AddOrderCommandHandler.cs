@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Eshop.Application.Configuration.Commands;
 using Eshop.Domain.Orders;
+using Eshop.Domain.Products;
 using Eshop.Domain.SeedWork;
 
 namespace Eshop.Application.Orders.CustomerOrder.Commands;
@@ -23,7 +24,7 @@ public class AddOrderCommandHandler(
 
         var order = Order.Create(
             request.CustomerId, 
-            request.Products.Select(_mapper.Map<OrderProductData>).ToList(), 
+            request.Products.Select(_mapper.Map<ProductQuantityData>).ToList(), 
             productsData);
 
         _orderRepository.Add(order);

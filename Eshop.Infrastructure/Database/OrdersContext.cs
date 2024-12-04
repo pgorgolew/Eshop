@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Eshop.Domain.CheckoutCarts;
 using Eshop.Domain.Customers;
 using Eshop.Domain.Orders;
 using MongoDB.Driver;
@@ -10,4 +11,6 @@ public sealed class OrdersContext(IMongoDatabase database)
     public IMongoDatabase Database { get; } = Guard.Against.Null(database, nameof(database));
     public IMongoCollection<Order> Orders => Database.GetCollection<Order>("Orders");
     public IMongoCollection<Customer> Customers => Database.GetCollection<Customer>("Customers");
+    public IMongoCollection<CheckoutCart> CheckoutCarts => Database.GetCollection<CheckoutCart>("CheckoutCarts");
+
 }

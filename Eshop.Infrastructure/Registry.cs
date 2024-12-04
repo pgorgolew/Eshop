@@ -1,4 +1,5 @@
 ﻿using Eshop.Application.Orders;
+using Eshop.Domain.CheckoutCarts;
 using Eshop.Domain.Orders;
 using Eshop.Domain.SeedWork;
 using Eshop.Infrastructure.Database;
@@ -14,7 +15,9 @@ public static class Registry
     public static void RegistryInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IProductPriceDataApi, ProductPriceDataApi>();
+        services.AddScoped<ICheckoutCartRepository, CheckoutCartRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IDomainEventsDispatcher, DomainEventsDispatcher>();
         services.AddScoped<IEntityTracker, EntityTracker>();

@@ -12,12 +12,13 @@ public abstract class Entity(Guid id)
     [BsonRepresentation(BsonType.String)]
     public Guid Id { get; private set; } = id;
 
-    private readonly List<IDomainEvent> _domainEvents = [];
+    // No readonly modifier, allowing initialization during deserialization
+    private List<IDomainEvent>? _domainEvents;
 
     /// <summary>
     /// Domain events occurred.
     /// </summary>
-    public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents?.AsReadOnly() ?? new List<IDomainEvent>().AsReadOnly();
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => (_domainEvents = _domainEvents ?? []).AsReadOnly();
 
     /// <summary>
     /// Add domain event.
@@ -25,7 +26,7 @@ public abstract class Entity(Guid id)
     /// <param name="domainEvent"></param>
     protected void AddDomainEvent(IDomainEvent domainEvent)
     {
-        _domainEvents.Add(domainEvent);
+        (_domainEvents = _domainEvents ?? []).Add(domainEvent);
     }
 
     /// <summary>
@@ -33,7 +34,7 @@ public abstract class Entity(Guid id)
     /// </summary>
     public void ClearDomainEvents()
     {
-        _domainEvents?.Clear();
+        (_domainEvents = _domainEvents ?? []).Clear();
     }
 
     protected static void CheckRule(IBusinessRule rule)

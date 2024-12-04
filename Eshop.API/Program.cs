@@ -3,6 +3,7 @@ using Eshop.API.Middlewares;
 using Eshop.Application;
 using Eshop.Infrastructure;
 using Microsoft.OpenApi.Models;
+using Prometheus;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Eshop.API;
@@ -39,6 +40,8 @@ public class Program
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Eshop API v1"));
         }
 
+        app.UseRouting();
+        app.MapMetrics();
         app.MapControllers();
             
         app.UseMiddleware<ExceptionHandlingMiddleware>();

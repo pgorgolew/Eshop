@@ -1,0 +1,17 @@
+meta {
+  name: null-pointer-error-handling
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5077/api/v1/customers
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": null
+  }
+}
